@@ -19,9 +19,14 @@ jobs:
         dotnet-version: 5.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
+    - name: Build the application
       run: dotnet build --no-restore
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
     - name: Unit tests
       run: dotnet test --no-build --verbosity normal --filter GreetingServiceUT
     - name: Intergration tests
       run: dotnet test --no-build --verbosity normal --filter HelloControllerIT
+
+
+
