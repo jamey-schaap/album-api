@@ -20,9 +20,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build the application
-      run: dotnet build --no-restore
+      run: dotnet publish --no-restore
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag album-api:1.0
     - name: Unit tests
       run: dotnet test --no-build --verbosity normal --filter GreetingServiceUT
     - name: Intergration tests
