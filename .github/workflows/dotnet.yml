@@ -28,11 +28,11 @@ jobs:
 
     - name: Unit tests
       run: dotnet test --no-build --verbosity normal 
-      working-directory: /Album.Api/Album.Api.Tests/
+      working-directory: Album.Api.Tests/
 
     - name: Intergration tests
       run: dotnet test --no-build --verbosity normal
-      working-directory: /Album.Api/Album.Api.IntergrationTests/
+      working-directory: Album.Api.IntergrationTests/
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
