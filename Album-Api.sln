@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Album.Api", "Album.Api\Albu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Album.Api.Tests", "Album.Api.Tests\Album.Api.Tests.csproj", "{809AB48B-6ABF-42E2-83D7-ABDAC5E3BB4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Album.Api.IntergrationTests", "album.api.intergrationtests\Album.Api.IntergrationTests.csproj", "{FFE7BEE8-7B75-4FA6-A302-5D48737FD599}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Album.Api.IntergrationTests", "Album.Api.IntergrationTests\Album.Api.IntergrationTests.csproj", "{FFE7BEE8-7B75-4FA6-A302-5D48737FD599}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
