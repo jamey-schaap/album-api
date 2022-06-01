@@ -22,9 +22,11 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: /Album.Api/
 
     - name: Build the application
       run: dotnet publish --no-restore
+      working-directory: /Album.Api/
 
     - name: Unit tests
       run: dotnet test --no-build --verbosity normal 
