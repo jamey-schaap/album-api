@@ -6,4 +6,4 @@ Resources:
         TaskDefinition: AlbumTaskDefinition 
         LoadBalancerInfo:
           ContainerName: "AlbumContainer"
-          ContainerPort: 80versopm
+          ContainerPort: 80
