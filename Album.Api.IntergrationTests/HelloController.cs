@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Album.Api.Models;
 using Xunit;
+using System.Net;
 
 namespace Album.Api.IntergrationTests
 {
@@ -19,14 +20,16 @@ namespace Album.Api.IntergrationTests
     [Fact]
     public async Task GetGreeting()
     {
-      var response = await _client.GetAsync("/api/hello?name=Jamey");
+      var name = "Jamey";
+      var response = await _client.GetAsync($"/api/hello?name={name}");
       response.EnsureSuccessStatusCode();
+      var hostName = Dns.GetHostName();
 
       var responseStr = await response.Content.ReadAsStringAsync();
       var responeDTO = JsonSerializer.Deserialize<GreetDto>(responseStr);
 
       Assert.NotNull(responeDTO);
-      Assert.Equal("Hello Jamey", responeDTO.greet);
+      Assert.Equal($"Hello {name} from {hostName}", responeDTO.greet);
     }
   }
 }

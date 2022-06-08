@@ -56,7 +56,7 @@ namespace Album.Api
         endpoints.MapControllers();
         endpoints.MapGet("/health", async context =>
         {
-          await context.Response.WriteAsync("health");
+          await context.Response.WriteAsync("healthy");
         });
       });
 

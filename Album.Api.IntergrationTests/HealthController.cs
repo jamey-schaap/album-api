@@ -23,7 +23,7 @@ namespace Album.Api.IntergrationTests
       var responseStr = await response.Content.ReadAsStringAsync();
 
       Assert.NotNull(responseStr);
-      Assert.Equal("health", responseStr);
+      Assert.Equal("healthy", responseStr);
     }
   }
 }

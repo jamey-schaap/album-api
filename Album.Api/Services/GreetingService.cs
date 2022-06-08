@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace Album.Api.Services
@@ -11,8 +12,8 @@ namespace Album.Api.Services
         output += "World";
       else
         output += name;
-
-      return output;
+      
+      return $"{output} from {Dns.GetHostName()}";
     }
   }
 }
