@@ -11,7 +11,7 @@ namespace Album.Api.Tests
     {
       // Arrange
       var validName = "Jamey";
-      var hostName = Dns.GetHostName();
+      var hostName = $"{Dns.GetHostName()} v2";
 
       // Act
       var result = GreetingService.Greet(validName);
@@ -28,7 +28,7 @@ namespace Album.Api.Tests
     public void ValidGreetingTheory(string name, string expected)
     {
       // Arrange
-      var hostName = Dns.GetHostName();
+      var hostName = $"{Dns.GetHostName()} v2";
 
       // Act
       var result = GreetingService.Greet(name);

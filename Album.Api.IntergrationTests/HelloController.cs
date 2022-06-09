@@ -23,7 +23,7 @@ namespace Album.Api.IntergrationTests
       var name = "Jamey";
       var response = await _client.GetAsync($"/api/hello?name={name}");
       response.EnsureSuccessStatusCode();
-      var hostName = Dns.GetHostName();
+      var hostName = $"{Dns.GetHostName()} v2";
 
       var responseStr = await response.Content.ReadAsStringAsync();
       var responeDTO = JsonSerializer.Deserialize<GreetDto>(responseStr);

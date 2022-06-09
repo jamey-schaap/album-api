@@ -13,7 +13,7 @@ namespace Album.Api.Services
       else
         output += name;
       
-      return $"{output} from {Dns.GetHostName()}";
+      return $"{output} from {Dns.GetHostName()} v2";
     }
   }
 }
