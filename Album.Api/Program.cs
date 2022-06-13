@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Album.Api.RDSDb;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +15,9 @@ namespace Album.Api
   {
     public static void Main(string[] args)
     {
-      CreateHostBuilder(args).Build().Run();
+      var host = CreateHostBuilder(args).Build();
+      CreateDbIfnotExists(host);
+      host.Run();
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -22,5 +26,22 @@ namespace Album.Api
             {
               webBuilder.UseStartup<Startup>();
             });
+
+    public static void CreateDbIfnotExists(IHost host)
+    {
+      using (var scope = host.Services.CreateScope())
+      {
+        var services = scope.ServiceProvider;
+        try
+        {
+          var context = services.GetRequiredService<RDSDbContext>();
+          DbInitializer.Initialize(context);
+        }
+        catch (Exception ex)
+        {
+          Console.WriteLine($"An exception occured: {ex}");
+        }
+      }
+    }
   }
 }
