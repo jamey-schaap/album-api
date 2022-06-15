@@ -1,3 +1,4 @@
 **bin/
 **obj/
 .vs
+/Album.Api/appsettings.json

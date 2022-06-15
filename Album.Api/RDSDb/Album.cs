@@ -1,6 +1,6 @@
 namespace Album.Api.RDSDb
 {
-  class Album
+  public class Album
   {
     public int Id { get; set; }
     public string Name { get; set; }
