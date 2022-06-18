@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Album.Api.RDSDb;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace Album.Api.Services
 {
-  public class AlbumService : ControllerBase, IAlbumService
+  public class AlbumService : IAlbumService
   {
     private readonly RDSDbContext _context;
 
@@ -17,22 +16,13 @@ namespace Album.Api.Services
     public async Task<IEnumerable<RDSDb.Album>> GetAlbums()
       => await _context.Albums.ToListAsync();
 
-    public async Task<ActionResult<RDSDb.Album>> GetAlbum(int id)
-    {
-      RDSDb.Album album = await _context.Albums.FindAsync(id);
-      if (album == null)
-        return NotFound();
+    public async Task<RDSDb.Album> GetAlbum(int id)
+      => await _context.Albums.FindAsync(id);
 
-      return Ok(album);
-    }
-
-    public async Task<IActionResult> PutAlbum(int id, RDSDb.Album album)
+    public async Task<Result> PutAlbum(int id, RDSDb.Album album)
     {
-      if (id != album.Id)
-        return BadRequest();
 
       _context.Entry(album).State = EntityState.Modified;
-
       try
       {
         await _context.SaveChangesAsync();
@@ -41,7 +31,7 @@ namespace Album.Api.Services
       {
         if (!AlbumExists(id))
         {
-          return NotFound();
+          return Result.Err;
         }
         else
         {
@@ -49,34 +39,23 @@ namespace Album.Api.Services
         }
       }
 
-      return NoContent();
+      return Result.Ok;
     }
 
-    public async Task<ActionResult<RDSDb.Album>> PostAlbum(RDSDb.Album album)
+    public async Task<RDSDb.Album> PostAlbum(RDSDb.Album album)
     {
       _context.Albums.Add(album);
       await _context.SaveChangesAsync();
-
-      return CreatedAtAction("GetAlbum", new { id = album.Id }, album);
+      return album;
     }
-
-    public async Task<IActionResult> DeleteAlbum(int id)
+  
+    public async Task DeleteAlbum(RDSDb.Album album)
     {
-      var album = await _context.Albums.FindAsync(id);
-      if (album == null)
-      {
-        return NotFound();
-      }
-
       _context.Albums.Remove(album);
       await _context.SaveChangesAsync();
-
-      return NoContent();
     }
 
     private bool AlbumExists(int id)
-    {
-      return _context.Albums.Any(e => e.Id == id);
-    }
+      => _context.Albums.Any(e => e.Id == id);
   }
 }

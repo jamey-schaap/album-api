@@ -12,20 +12,20 @@ namespace Album.Api.Controllers
   [ApiController]
   public class AlbumController : ControllerBase
   {
-    private readonly AlbumService _albumService;
-    
+    private readonly IAlbumService _albumService;
 
-    public AlbumController(RDSDbContext context)  
-      => _albumService = new (context);
+    public AlbumController(RDSDbContext context)
+      => _albumService = new AlbumService(context);
 
-    // GET: api/Album
+    /// GET: api/Album
     [HttpGet]
     public async Task<ActionResult<IEnumerable<RDSDb.Album>>> GetAlbums()
       => Ok(await _albumService.GetAlbums());
 
     // GET: api/Album/5
     [HttpGet("{id}")]
-    public async  Task<ActionResult<RDSDb.Album>> GetAlbum(int id) {
+    public async Task<ActionResult<RDSDb.Album>> GetAlbum(int id)
+    {
       RDSDb.Album album = await _albumService.GetAlbum(id);
       if (album == null)
         return NotFound();
@@ -36,17 +36,47 @@ namespace Album.Api.Controllers
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutAlbum(int id, RDSDb.Album album)
-      => await _albumService.PutAlbum(id, album);
+    {
+      if (id != album.Id)
+        return BadRequest();
+
+      Result result = await _albumService.PutAlbum(id, album);
+      switch (result)
+      {
+        case Result.Err:
+          return NotFound();
+
+        case Result.Ok:
+          goto default;
+
+        default:
+          return NoContent();
+      }
+
+    }
 
     // POST: api/Album
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<RDSDb.Album>> PostAlbum(RDSDb.Album album)
-      => await _albumService.PostAlbum(album);
+    {
+      RDSDb.Album newAlbum = await _albumService.PostAlbum(album);
+      return CreatedAtAction("GetAlbum", new { id = album.Id }, album);
+    }
 
     // DELETE: api/Album/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAlbum(int id)
-      => await _albumService.DeleteAlbum(id);
+    {
+      var album = await _albumService.GetAlbum(id);
+      if (album == null)
+      {
+        return NotFound();
+      }
+
+      await _albumService.DeleteAlbum(album);
+
+      return NoContent();
+    }
   }
 }
