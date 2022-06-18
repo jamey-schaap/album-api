@@ -19,12 +19,12 @@ namespace Album.Api.Controllers
 
     /// GET: api/Album
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<RDSDb.Album>>> GetAlbums()
+    public async Task<IActionResult> GetAlbums()
       => Ok(await _albumService.GetAlbums());
 
     // GET: api/Album/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<RDSDb.Album>> GetAlbum(int id)
+    public async Task<IActionResult> GetAlbum(int id)
     {
       RDSDb.Album album = await _albumService.GetAlbum(id);
       if (album == null)
@@ -58,7 +58,7 @@ namespace Album.Api.Controllers
     // POST: api/Album
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<RDSDb.Album>> PostAlbum(RDSDb.Album album)
+    public async Task<IActionResult> PostAlbum(RDSDb.Album album)
     {
       RDSDb.Album newAlbum = await _albumService.PostAlbum(album);
       return CreatedAtAction("GetAlbum", new { id = album.Id }, album);
