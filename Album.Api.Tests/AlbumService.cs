@@ -18,7 +18,7 @@ namespace Album.Api.Tests
       Assert.Equal("Meteora", albums[1].Name);
       Assert.Equal("Hybrid Theory", albums[2].Name);
       Assert.Equal("Shogun", albums[3].Name);
-    }
+    } 
 
     [Fact]
     public async void GetAlbum_GivenValidID_ReturnsAlbum()
