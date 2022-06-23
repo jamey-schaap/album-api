@@ -50,7 +50,8 @@ namespace Album.Api
       }
 
       app.UseCors(policy => policy
-        .WithOrigins("alb-album-1473327054.us-east-1.elb.amazonaws.com")
+        .AllowAnyOrigin()
+        // .WithOrigins("alb-album-1473327054.us-east-1.elb.amazonaws.com")
         .AllowAnyMethod()
         .AllowAnyHeader());
 
