@@ -8,7 +8,7 @@ namespace Album.Api.Tests
   public abstract class TestBase : IDisposable
   {
     protected static DbContextOptions<RDSDbContext> dbContextOptions = new DbContextOptionsBuilder<RDSDbContext>()
-      .UseInMemoryDatabase(databaseName: "AlbumServiceUT")
+      .UseInMemoryDatabase(databaseName: "InMemoryDbForTesting")
       .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
       .Options;
 
