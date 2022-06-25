@@ -14,8 +14,8 @@ namespace Album.Api.Controllers
   {
     private readonly IAlbumService _albumService;
 
-    public AlbumController(RDSDbContext context)
-      => _albumService = new AlbumService(context);
+    public AlbumController(IAlbumService ablumservice)
+      => _albumService = ablumservice;
 
     /// GET: api/Album
     [HttpGet]

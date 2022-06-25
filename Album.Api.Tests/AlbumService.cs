@@ -4,28 +4,35 @@ using Xunit;
 
 namespace Album.Api.Tests
 {
-  public class AlbumServiceUT : TestBase
+  public class AlbumServiceUT : AlbumDataSeed
   {
-
     [Fact]
     public async void GetAlbums()
     {
+      // Arrange
       var service = new AlbumService(this.context);
+
+      // Act
       var albums = (await service.GetAlbums()).ToList();
 
+      // Assert
       Assert.Equal(4, albums.Count);
       Assert.Equal(".5 The Gray Chapter", albums[0].Name);
       Assert.Equal("Meteora", albums[1].Name);
       Assert.Equal("Hybrid Theory", albums[2].Name);
       Assert.Equal("Shogun", albums[3].Name);
-    } 
+    }
 
     [Fact]
     public async void GetAlbum_GivenValidID_ReturnsAlbum()
     {
+      // Arrange
       var service = new AlbumService(this.context);
+
+      // Act
       var album = await service.GetAlbum(2);
 
+      // Assert
       Assert.NotNull(album);
       Assert.Equal(2, album.Id);
       Assert.Equal("Meteora", album.Name);
@@ -36,9 +43,13 @@ namespace Album.Api.Tests
     [InlineData(5, null)]
     public async void ValidGetAlbumTheory(int id, RDSDb.Album expected)
     {
+      // Arrange
       var service = new AlbumService(this.context);
+
+      // Act
       var album = await service.GetAlbum(id);
 
+      // Assert
       Assert.Equal(expected, album);
     }
 
@@ -46,6 +57,7 @@ namespace Album.Api.Tests
     [Fact]
     public async void PostAlbum_GivenValidAlbum_Album()
     {
+      // Arrange
       var service = new AlbumService(this.context);
 
       var id = 6;
@@ -57,48 +69,50 @@ namespace Album.Api.Tests
         ImageUrl = ""
       };
 
+      // Act
       var responseAlbum = await service.PostAlbum(album);
 
+      // Assert
       Assert.Equal(album, responseAlbum);
-      Assert.Equal(album, context.Albums.Find(id));
+      Assert.Equal(album, this.context.Albums.Find(id));
     }
 
 
-    // [Fact]
-    // public async void PutAlbum_GivenValidIDAlbum_Album()
-    // {
-    //   var service = new AlbumService(this.context);
+    [Fact]
+    public async void PutAlbum_GivenValidIDAlbum_Album()
+    {
+      // Arrange
+      var service = new AlbumService(this.context);
 
-    //   var id = 1;
-    //   var album = new RDSDb.Album()
-    //   {
-    //     Id = 1,
-    //     Name = ".5 The Gray Chapter",
-    //     Artist = "Slipknot",
-    //     ImageUrl = ""
-    //   };
+      var id = 1;
+      var album = await service.GetAlbum(id);
+      var newAlbumName = "Bleed The Future";
+      album.Name = newAlbumName;
 
-    //   var response = await service.PutAlbum(album);
+      // Act
+      var response = await service.PutAlbum(id, album);
 
-    //   Assert.Equal(Result.Ok, responseAlbum);
-    //   Assert.Equal(album, context.Albums.Find(id));
-    // }
+      // Assert
+      Assert.Equal(Result.Ok, response);
+      var modifiedAlbum = this.context.Albums.Find(id);
+      Assert.Equal(newAlbumName, modifiedAlbum.Name);
+    }
 
-    // [Fact]
-    // public async void DeleteAlbum_GivenAlbum()
-    // {
-    //   var service = new AlbumService(this.context);
-    //   var album = new RDSDb.Album()
-    //   {
-    //     Id = 1,
-    //     Name = ".5 The Gray Chapter",
-    //     Artist = "Slipknot",
-    //     ImageUrl = ""
-    //   };
+    [Fact]
+    public async void DeleteAlbum_GivenAlbum()
+    {
+      // Arrange
+      var service = new AlbumService(this.context);
+      var id = 1;
+      var album = await service.GetAlbum(id);
 
-    //   await service.DeleteAlbum(album);
-    //   Assert.Equal(null, context.Albums.Find(album));
-    // }
+      // Act
+      await service.DeleteAlbum(album);
+      var response = this.context.Albums.Find(id);
+
+      // Assert
+      Assert.Null(response);
+    }
   }
 }
 

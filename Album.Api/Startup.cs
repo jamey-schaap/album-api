@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Album.Api.RDSDb;
+using Album.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,13 +31,14 @@ namespace Album.Api
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddCors();
+      services.AddDbContext<RDSDbContext>(options =>
+        options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
       services.AddControllers();
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Album.Api", Version = "v1" });
       });
-      services.AddDbContext<RDSDbContext>(options =>
-        options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+      services.AddScoped<IAlbumService, AlbumService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +53,7 @@ namespace Album.Api
 
       app.UseCors(policy => policy
         .AllowAnyOrigin()
-        // .WithOrigins("alb-album-1473327054.us-east-1.elb.amazonaws.com")
+        // .WithOrigins("http://cnsd-react-app-923720185987.s3-website-us-east-1.amazonaws.com")
         .AllowAnyMethod()
         .AllowAnyHeader());
 

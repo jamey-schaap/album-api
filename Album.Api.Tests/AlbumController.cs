@@ -3,20 +3,35 @@ using Album.Api.Controllers;
 using Xunit;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
+using Album.Api.Services;
+using System.Threading.Tasks;
 
 namespace Album.Api.Tests
 {
-  public class AlbumControllerUT : TestBase
+  public class AlbumControllerUT 
   {
     [Fact]
     public async void GetAlbums()
     {
-      var controller = new AlbumController(this.context);
-      var response = await controller.GetAlbums();
+      //  Arrange
+      var albums = new List<RDSDb.Album> {
+          new() { Id=1, Name=".5 The Gray Chapter", Artist="Slipknot", ImageUrl=""},
+          new() { Id=2, Name="Meteora", Artist="Linkin Park", ImageUrl=""},
+          new() { Id=3, Name="Hybrid Theory", Artist="Linkin Park", ImageUrl=""},
+          new() { Id=4, Name="Shogun", Artist="Trivium", ImageUrl=""},
+        };
+      var iEnumAlbums = (IEnumerable<RDSDb.Album>)albums;
+      var albumServiceMock = new Mock<IAlbumService>();
+      albumServiceMock.Setup(a => a.GetAlbums()).Returns(Task.FromResult(iEnumAlbums));
+      var controller = new AlbumController(albumServiceMock.Object);
 
+      // Act
+      var response = await controller.GetAlbums();
       var okObjectResult = Assert.IsType<OkObjectResult>(response);
       var returnValue = Assert.IsType<List<RDSDb.Album>>(okObjectResult.Value);
 
+      // Assert
       Assert.Equal(4, returnValue.Count);
       Assert.Equal(".5 The Gray Chapter", returnValue[0].Name);
       Assert.Equal("Meteora", returnValue[1].Name);
@@ -27,86 +42,128 @@ namespace Album.Api.Tests
     [Fact]
     public async void GetAlbum_GivenValidID_ReturnsAlbum()
     {
-      var controller = new AlbumController(this.context);
+      // Act
       var id = 1;
-      var response = await controller.GetAlbum(id);
+      var album = new RDSDb.Album()
+      {
+        Id = id,
+        Name = ".5 The Gray Chapter",
+        Artist = "Slipknot",
+        ImageUrl = ""
+      };
+      var albumServiceMock = new Mock<IAlbumService>();
+      albumServiceMock.Setup(a => a.GetAlbum(It.IsAny<int>())).Returns(Task.FromResult(album));
+      var controller = new AlbumController(albumServiceMock.Object);
 
+      // Arrange
+      var response = await controller.GetAlbum(id);
       var okObjectResult = Assert.IsType<OkObjectResult>(response);
       var returnValue = Assert.IsType<RDSDb.Album>(okObjectResult.Value);
 
+      // Assert
       Assert.NotNull(returnValue);
       Assert.Equal(".5 The Gray Chapter", returnValue.Name);
       Assert.Equal(id, returnValue.Id);
     }
 
     [Theory]
-    [InlineData(-1)]
-    [InlineData(5)]
-    public async void ValidGetAlbumTheory(int id)
+    [InlineData(-1, null)]
+    [InlineData(5, null)]
+    public async void ValidGetAlbumTheory(int id, RDSDb.Album expected)
     {
-      var controller = new AlbumController(this.context);
+      // Arrange
+      var album = new RDSDb.Album()
+      {
+        Id = 1,
+        Name = ".5 The Gray Chapter",
+        Artist = "Slipknot",
+        ImageUrl = ""
+      };
+      var albumServiceMock = new Mock<IAlbumService>();
+      albumServiceMock.Setup(a => a.GetAlbum(It.IsAny<int>())).Returns(Task.FromResult<RDSDb.Album>(expected));
+      var controller = new AlbumController(albumServiceMock.Object);
+
+      // Act
       var response = await controller.GetAlbum(id);
 
+      // Assert
       var result = Assert.IsType<NotFoundResult>(response);
     }
 
 
-    // [Fact]
-    // public async void PostAlbum_GivenValidAlbum_Album()
-    // {
-    //   var controller = new AlbumController(this.context);
+    [Fact]
+    public async void PostAlbum_GivenValidAlbum_Album()
+    {
+      // Arrange
+      var id = 6;
+      var album = new RDSDb.Album()
+      {
+        Id = id,
+        Name = "First Class",
+        Artist = "Jack Harlow",
+        ImageUrl = ""
+      };
 
-    //   var id = 6;
-    //   var album = new RDSDb.Album()
-    //   {
-    //     Id = id,
-    //     Name = "First Class",
-    //     Artist = "Jack Harlow",
-    //     ImageUrl = ""
-    //   };
+      var albumServiceMock = new Mock<IAlbumService>();
+      albumServiceMock.Setup(a => a.PostAlbum(It.IsAny<RDSDb.Album>())).Returns(Task.FromResult(album));
+      var controller = new AlbumController(albumServiceMock.Object);
 
-    //   var response = await controller.PostAlbum(album);
+      // Act
+      var response = await controller.PostAlbum(album);
 
-    //   var okObjectResult = Assert.IsType<CreatedAtActionResult>(response);
-    //   var returnValue = Assert.IsType<RDSDb.Album>(okObjectResult.Value);
-    //   Assert.Equal(album, returnValue);
-    // }
+      // Assert
+      var okObjectResult = Assert.IsType<CreatedAtActionResult>(response);
+      var returnValue = Assert.IsType<RDSDb.Album>(okObjectResult.Value);
+      Assert.Equal(album, returnValue);
+    }
 
 
-    // [Fact]
-    // public async void PutAlbum_GivenValidIDAlbum_Album()
-    // {
-    //   var service = new AlbumService(this.context);
+    [Fact]
+    public async void PutAlbum_GivenValidIDAlbum_Album()
+    {
+      // Arrange
+      var albumServiceMock = new Mock<IAlbumService>();
+      albumServiceMock.Setup(a => a.PutAlbum(It.IsAny<int>(), It.IsAny<RDSDb.Album>())).Returns(Task.FromResult(Result.Ok));
+      var controller = new AlbumController(albumServiceMock.Object);
 
-    //   var id = 1;
-    //   var album = new RDSDb.Album()
-    //   {
-    //     Id = 1,
-    //     Name = ".5 The Gray Chapter",
-    //     Artist = "Slipknot",
-    //     ImageUrl = ""
-    //   };
+      var id = 1;
+      var album = new RDSDb.Album()
+      {
+        Id = 1,
+        Name = ".5 The Gray Chapter",
+        Artist = "Slipknot",
+        ImageUrl = ""
+      };
 
-    //   var response = await service.PutAlbum(album);
+      // Act
+      var response = await controller.PutAlbum(id, album);
 
-    //   Assert.Equal(Result.Ok, responseAlbum);
-    //   Assert.Equal(album, context.Albums.Find(id));
-    // }
+      // Assert
+      var okObjectResult = Assert.IsType<NoContentResult>(response);
+    }
 
-    // [Fact]
-    // public async void DeleteAlbum_GivenAlbum()
-    // {
-    //   var service = new AlbumService(this.context);
-    //   var album = new RDSDb.Album()
-    //   {
-    //     Id = 1,
-    //     Name = ".5 The Gray Chapter",
-    //     Artist = "Slipknot",
-    //     ImageUrl = ""
-    //   };
+    [Fact]
+    public async void DeleteAlbum_GivenAlbum()
+    {
+      // Arrange
+      var id = 1;
+      var album = new RDSDb.Album()
+      {
+        Id = id,
+        Name = ".5 The Gray Chapter",
+        Artist = "Slipknot",
+        ImageUrl = ""
+      };
+      var albumServiceMock = new Mock<IAlbumService>();
+      albumServiceMock.Setup(a => a.GetAlbum(It.IsAny<int>())).Returns(Task.FromResult(album));
+      albumServiceMock.Setup(a => a.DeleteAlbum(It.IsAny<RDSDb.Album>()));
+      var controller = new AlbumController(albumServiceMock.Object);
 
-    //   await service.DeleteAlbum(album);
-    //   Assert.Equal(null, context.Albums.Find(album));
-    // }
+      // Act
+      var response = await controller.DeleteAlbum(id);
+
+      // Asert
+      var okObjectResult = Assert.IsType<NoContentResult>(response);
+    }
   }
 }

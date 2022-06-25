@@ -5,7 +5,7 @@ using System;
 
 namespace Album.Api.Tests
 {
-  public abstract class TestBase : IDisposable
+  public abstract class AlbumDataSeed : IDisposable
   {
     protected static DbContextOptions<RDSDbContext> dbContextOptions = new DbContextOptionsBuilder<RDSDbContext>()
       .UseInMemoryDatabase(databaseName: "InMemoryDbForTesting")
@@ -15,7 +15,7 @@ namespace Album.Api.Tests
     protected RDSDbContext context;
 
     // Called before every test method.
-    protected TestBase() => Setup();
+    protected AlbumDataSeed() => Setup();
 
     public void Setup()
     {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Album.Api.Services
 {
-  internal interface IAlbumService
+  public interface IAlbumService
   {
     public Task<IEnumerable<RDSDb.Album>> GetAlbums();
     public Task<RDSDb.Album> GetAlbum(int id);
