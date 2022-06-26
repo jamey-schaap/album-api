@@ -27,17 +27,5 @@ namespace Album.Api.Controllers
       };
       return Ok(greet);
     }
-
-    // api/hello/Jack
-    // [HttpGet("{name?}")]
-    // public IActionResult Get(string name)
-    // {
-    //   _logger.LogInformation($"{DateTime.Now} [GET] name='{name}'");
-    //   GreetDto greet = new GreetDto()
-    //   {
-    //     greet = GreetingService.Greet(name)
-    //   };
-    //   return Ok(greet);
-    // }
   }
 }

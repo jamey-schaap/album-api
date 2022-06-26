@@ -87,7 +87,7 @@ namespace Album.Api.Tests
       var response = await controller.GetAlbum(id);
 
       // Assert
-      var result = Assert.IsType<NotFoundResult>(response);
+      var notFoundResult = Assert.IsType<NotFoundResult>(response);
     }
 
 
@@ -95,10 +95,8 @@ namespace Album.Api.Tests
     public async void PostAlbum_GivenValidAlbum_Album()
     {
       // Arrange
-      var id = 6;
       var album = new RDSDb.Album()
       {
-        Id = id,
         Name = "First Class",
         Artist = "Jack Harlow",
         ImageUrl = ""
@@ -112,8 +110,8 @@ namespace Album.Api.Tests
       var response = await controller.PostAlbum(album);
 
       // Assert
-      var okObjectResult = Assert.IsType<CreatedAtActionResult>(response);
-      var returnValue = Assert.IsType<RDSDb.Album>(okObjectResult.Value);
+      var createdAtResult = Assert.IsType<CreatedAtActionResult>(response);
+      var returnValue = Assert.IsType<RDSDb.Album>(createdAtResult.Value);
       Assert.Equal(album, returnValue);
     }
 
@@ -139,7 +137,7 @@ namespace Album.Api.Tests
       var response = await controller.PutAlbum(id, album);
 
       // Assert
-      var okObjectResult = Assert.IsType<NoContentResult>(response);
+      var noContentResult = Assert.IsType<NoContentResult>(response);
     }
 
     [Fact]
@@ -163,7 +161,7 @@ namespace Album.Api.Tests
       var response = await controller.DeleteAlbum(id);
 
       // Asert
-      var okObjectResult = Assert.IsType<NoContentResult>(response);
+      var noContentResult = Assert.IsType<NoContentResult>(response);
     }
   }
 }
