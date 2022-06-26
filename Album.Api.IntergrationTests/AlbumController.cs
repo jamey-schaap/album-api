@@ -29,7 +29,7 @@ namespace Album.Api.IntergrationTests
 
       // Act
       var responseStr = await response.Content.ReadAsStringAsync();
-      var albums = JsonSerializer.Deserialize<List<RDSDb.Album>>(responseStr);
+      var albums = JsonSerializer.Deserialize<List<Models.Album>>(responseStr);
 
       // Assert
       response.EnsureSuccessStatusCode();
@@ -47,7 +47,7 @@ namespace Album.Api.IntergrationTests
       // Act
       var response = await _client.GetAsync($"/api/album/{id}");
       var responseStr = await response.Content.ReadAsStringAsync();
-      var album = JsonSerializer.Deserialize<RDSDb.Album>(responseStr);
+      var album = JsonSerializer.Deserialize<Models.Album>(responseStr);
 
       // Assert
       response.EnsureSuccessStatusCode();
@@ -60,7 +60,7 @@ namespace Album.Api.IntergrationTests
     {
       // Arrange
       var id = 1;
-      var album = new RDSDb.Album()
+      var album = new Models.Album()
       {
         Id = id,
         Name = "First Class",
@@ -82,7 +82,7 @@ namespace Album.Api.IntergrationTests
     public async Task PostAlbum_GivenValidAlbum()
     {
       // Arrange
-      var album = new RDSDb.Album()
+      var album = new Models.Album()
       {
         Name = "First Class",
         Artist = "Jack Harlow",

@@ -1,4 +1,4 @@
-namespace Album.Api.RDSDb
+namespace Album.Api.Models
 {
   public class Album
   {

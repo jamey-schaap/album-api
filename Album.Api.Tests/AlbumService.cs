@@ -41,7 +41,7 @@ namespace Album.Api.Tests
     [Theory]
     [InlineData(-1, null)]
     [InlineData(5, null)]
-    public async void ValidGetAlbumTheory(int id, RDSDb.Album expected)
+    public async void ValidGetAlbumTheory(int id, Models.Album expected)
     {
       // Arrange
       var service = new AlbumService(this.context);
@@ -61,7 +61,7 @@ namespace Album.Api.Tests
       var service = new AlbumService(this.context);
 
       var id = 6;
-      var album = new RDSDb.Album()
+      var album = new Models.Album()
       {
         Id = id,
         Name = "First Class",

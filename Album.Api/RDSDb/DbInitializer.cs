@@ -12,7 +12,7 @@ namespace Album.Api.RDSDb
       if (context.Albums.Any())
         return;
 
-      List<Album> albums = new List<Album> {
+      List<Models.Album> albums = new List<Models.Album> {
         new() { 
           Name = "Top Gun: Maverick", 
           Artist = "Tom Cruise",

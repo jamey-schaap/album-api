@@ -32,7 +32,7 @@ namespace Album.Api.Tests
     {
       if (await context.Albums.CountAsync() == 0)
       {
-        var albums = new List<RDSDb.Album> {
+        var albums = new List<Models.Album> {
           new() { Id=1, Name=".5 The Gray Chapter", Artist="Slipknot", ImageUrl=""},
           new() { Id=2, Name="Meteora", Artist="Linkin Park", ImageUrl=""},
           new() { Id=3, Name="Hybrid Theory", Artist="Linkin Park", ImageUrl=""},

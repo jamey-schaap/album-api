@@ -17,9 +17,9 @@ namespace Album.Api.IntergrationTests
       InitializeDbForTests(db);
     }
 
-    public static List<RDSDb.Album> GetSeedingMessages()
+    public static List<Models.Album> GetSeedingMessages()
     {
-      return new List<RDSDb.Album>()
+      return new List<Models.Album>()
       {
         new() { Id=1, Name=".5 The Gray Chapter", Artist="Slipknot", ImageUrl="https://picsum.photos/200/300"},
         new() { Id=2, Name="Meteora", Artist="Linkin Park", ImageUrl="https://picsum.photos/200/300"},

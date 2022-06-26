@@ -15,13 +15,13 @@ namespace Album.Api.Tests
     public async void GetAlbums()
     {
       //  Arrange
-      var albums = new List<RDSDb.Album> {
+      var albums = new List<Models.Album> {
           new() { Id=1, Name=".5 The Gray Chapter", Artist="Slipknot", ImageUrl=""},
           new() { Id=2, Name="Meteora", Artist="Linkin Park", ImageUrl=""},
           new() { Id=3, Name="Hybrid Theory", Artist="Linkin Park", ImageUrl=""},
           new() { Id=4, Name="Shogun", Artist="Trivium", ImageUrl=""},
         };
-      var iEnumAlbums = (IEnumerable<RDSDb.Album>)albums;
+      var iEnumAlbums = (IEnumerable<Models.Album>)albums;
       var albumServiceMock = new Mock<IAlbumService>();
       albumServiceMock.Setup(a => a.GetAlbums()).Returns(Task.FromResult(iEnumAlbums));
       var controller = new AlbumController(albumServiceMock.Object);
@@ -29,7 +29,7 @@ namespace Album.Api.Tests
       // Act
       var response = await controller.GetAlbums();
       var okObjectResult = Assert.IsType<OkObjectResult>(response);
-      var returnValue = Assert.IsType<List<RDSDb.Album>>(okObjectResult.Value);
+      var returnValue = Assert.IsType<List<Models.Album>>(okObjectResult.Value);
 
       // Assert
       Assert.Equal(4, returnValue.Count);
@@ -44,7 +44,7 @@ namespace Album.Api.Tests
     {
       // Act
       var id = 1;
-      var album = new RDSDb.Album()
+      var album = new Models.Album()
       {
         Id = id,
         Name = ".5 The Gray Chapter",
@@ -58,7 +58,7 @@ namespace Album.Api.Tests
       // Arrange
       var response = await controller.GetAlbum(id);
       var okObjectResult = Assert.IsType<OkObjectResult>(response);
-      var returnValue = Assert.IsType<RDSDb.Album>(okObjectResult.Value);
+      var returnValue = Assert.IsType<Models.Album>(okObjectResult.Value);
 
       // Assert
       Assert.NotNull(returnValue);
@@ -69,10 +69,10 @@ namespace Album.Api.Tests
     [Theory]
     [InlineData(-1, null)]
     [InlineData(5, null)]
-    public async void ValidGetAlbumTheory(int id, RDSDb.Album expected)
+    public async void ValidGetAlbumTheory(int id, Models.Album expected)
     {
       // Arrange
-      var album = new RDSDb.Album()
+      var album = new Models.Album()
       {
         Id = 1,
         Name = ".5 The Gray Chapter",
@@ -80,7 +80,7 @@ namespace Album.Api.Tests
         ImageUrl = ""
       };
       var albumServiceMock = new Mock<IAlbumService>();
-      albumServiceMock.Setup(a => a.GetAlbum(It.IsAny<int>())).Returns(Task.FromResult<RDSDb.Album>(expected));
+      albumServiceMock.Setup(a => a.GetAlbum(It.IsAny<int>())).Returns(Task.FromResult<Models.Album>(expected));
       var controller = new AlbumController(albumServiceMock.Object);
 
       // Act
@@ -95,7 +95,7 @@ namespace Album.Api.Tests
     public async void PostAlbum_GivenValidAlbum_Album()
     {
       // Arrange
-      var album = new RDSDb.Album()
+      var album = new Models.Album()
       {
         Name = "First Class",
         Artist = "Jack Harlow",
@@ -103,7 +103,7 @@ namespace Album.Api.Tests
       };
 
       var albumServiceMock = new Mock<IAlbumService>();
-      albumServiceMock.Setup(a => a.PostAlbum(It.IsAny<RDSDb.Album>())).Returns(Task.FromResult(album));
+      albumServiceMock.Setup(a => a.PostAlbum(It.IsAny<Models.Album>())).Returns(Task.FromResult(album));
       var controller = new AlbumController(albumServiceMock.Object);
 
       // Act
@@ -111,7 +111,7 @@ namespace Album.Api.Tests
 
       // Assert
       var createdAtResult = Assert.IsType<CreatedAtActionResult>(response);
-      var returnValue = Assert.IsType<RDSDb.Album>(createdAtResult.Value);
+      var returnValue = Assert.IsType<Models.Album>(createdAtResult.Value);
       Assert.Equal(album, returnValue);
     }
 
@@ -121,11 +121,11 @@ namespace Album.Api.Tests
     {
       // Arrange
       var albumServiceMock = new Mock<IAlbumService>();
-      albumServiceMock.Setup(a => a.PutAlbum(It.IsAny<int>(), It.IsAny<RDSDb.Album>())).Returns(Task.FromResult(Result.Ok));
+      albumServiceMock.Setup(a => a.PutAlbum(It.IsAny<int>(), It.IsAny<Models.Album>())).Returns(Task.FromResult(Result.Ok));
       var controller = new AlbumController(albumServiceMock.Object);
 
       var id = 1;
-      var album = new RDSDb.Album()
+      var album = new Models.Album()
       {
         Id = 1,
         Name = ".5 The Gray Chapter",
@@ -145,7 +145,7 @@ namespace Album.Api.Tests
     {
       // Arrange
       var id = 1;
-      var album = new RDSDb.Album()
+      var album = new Models.Album()
       {
         Id = id,
         Name = ".5 The Gray Chapter",
@@ -154,7 +154,7 @@ namespace Album.Api.Tests
       };
       var albumServiceMock = new Mock<IAlbumService>();
       albumServiceMock.Setup(a => a.GetAlbum(It.IsAny<int>())).Returns(Task.FromResult(album));
-      albumServiceMock.Setup(a => a.DeleteAlbum(It.IsAny<RDSDb.Album>()));
+      albumServiceMock.Setup(a => a.DeleteAlbum(It.IsAny<Models.Album>()));
       var controller = new AlbumController(albumServiceMock.Object);
 
       // Act

@@ -26,7 +26,7 @@ namespace Album.Api.Controllers
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAlbum(int id)
     {
-      RDSDb.Album album = await _albumService.GetAlbum(id);
+      Models.Album album = await _albumService.GetAlbum(id);
       if (album == null)
         return NotFound();
       return Ok(album);
@@ -35,7 +35,7 @@ namespace Album.Api.Controllers
     // PUT: api/Album/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAlbum(int id, RDSDb.Album album)
+    public async Task<IActionResult> PutAlbum(int id, Models.Album album)
     {
       if (id != album.Id)
         return BadRequest();
@@ -58,9 +58,9 @@ namespace Album.Api.Controllers
     // POST: api/Album
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<IActionResult> PostAlbum(RDSDb.Album album)
+    public async Task<IActionResult> PostAlbum(Models.Album album)
     {
-      RDSDb.Album newAlbum = await _albumService.PostAlbum(album);
+      Models.Album newAlbum = await _albumService.PostAlbum(album);
       return CreatedAtAction("GetAlbum", new { id = album.Id }, album);
     }
 

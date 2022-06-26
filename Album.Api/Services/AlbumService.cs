@@ -13,13 +13,13 @@ namespace Album.Api.Services
 
     public AlbumService(RDSDbContext context) => _context = context;
 
-    public async Task<IEnumerable<RDSDb.Album>> GetAlbums()
+    public async Task<IEnumerable<Models.Album>> GetAlbums()
       => await _context.Albums.ToListAsync();
 
-    public async Task<RDSDb.Album> GetAlbum(int id)
+    public async Task<Models.Album> GetAlbum(int id)
       => await _context.Albums.FindAsync(id);
 
-    public async Task<Result> PutAlbum(int id, RDSDb.Album album)
+    public async Task<Result> PutAlbum(int id, Models.Album album)
     {
 
       _context.Entry(album).State = EntityState.Modified;
@@ -42,14 +42,14 @@ namespace Album.Api.Services
       return Result.Ok;
     }
 
-    public async Task<RDSDb.Album> PostAlbum(RDSDb.Album album)
+    public async Task<Models.Album> PostAlbum(Models.Album album)
     {
       _context.Albums.Add(album);
       await _context.SaveChangesAsync();
       return album;
     }
   
-    public async Task DeleteAlbum(RDSDb.Album album)
+    public async Task DeleteAlbum(Models.Album album)
     {
       _context.Albums.Remove(album);
       await _context.SaveChangesAsync();
