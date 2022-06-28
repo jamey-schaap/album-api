@@ -52,8 +52,7 @@ namespace Album.Api
       }
 
       app.UseCors(policy => policy
-        .AllowAnyOrigin()
-        // .WithOrigins("http://cnsd-react-app-923720185987.s3-website-us-east-1.amazonaws.com")
+        .WithOrigins("http://cnsd-react-app-923720185987.s3-website-us-east-1.amazonaws.com")
         .AllowAnyMethod()
         .AllowAnyHeader());
 

@@ -14,19 +14,19 @@ namespace Album.Api.RDSDb
 
       List<Models.Album> albums = new List<Models.Album> {
         new() { 
-          Name = "Top Gun: Maverick", 
-          Artist = "Tom Cruise",
-          ImageUrl = "https://loremflickr.com/320/240",
+          Name = "Zavali Ebalo", 
+          Artist = "Slaughter To Prevail",
+          ImageUrl = "https://i1.sndcdn.com/artworks-dvaQQH6JZARF-0-t500x500.jpg",
         },
         new() { 
-          Name = "Pokémon: The First Movie", 
-          Artist = "Ash Ketchum",
-          ImageUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/c/c9/Pokemon-mewtwo-strikes-back.jpg/220px-Pokemon-mewtwo-strikes-back.jpg",
+          Name = "Meteora", 
+          Artist = "Linkin Park",
+          ImageUrl = "https://www.bol.com/nl/nl/p/meteora/1000004004289106/",
         },
         new() { 
-          Name = "Pokémon: Destiny Deoxys", 
-          Artist = "Ash Ketchum",
-          ImageUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/7/78/Pok%C3%A9mon_Destiny_Deoxys_poster.jpg/220px-Pok%C3%A9mon_Destiny_Deoxys_poster.jpg",
+          Name = "What The Dead Man Say", 
+          Artist = "Trivium",
+          ImageUrl = "https://www.amazon.nl/Trivium-What-Dead-Men-Say/dp/B0851LYSHT",
         },
       };
 
