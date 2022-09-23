@@ -1,0 +1,26 @@
+name: Performance test
+
+on:
+  push:
+    branches: [ main ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: action/checkout@v3
+    - name: Setup .NET
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build the application
+      run: dotnet build --no-restore
+
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal 
+      
