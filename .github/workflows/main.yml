@@ -12,6 +12,7 @@ jobs:
     steps:
     - uses: action/checkout@v3
     - name: Setup .NET
+      uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 5.0.x
 
